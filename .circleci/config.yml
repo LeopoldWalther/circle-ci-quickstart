@@ -24,6 +24,20 @@ jobs:
           name: "prints the owner project environment variable to the console"
           command: |
             echo $OWNER
+  save_hello_world_output:
+    docker: 
+      - image: circleci/node:13.8.0
+    steps:
+      - run:
+          name: "outputs text to csv file"
+          command: |
+            echo "hello again!" > ~/output.txt
+      - persist_to_workspace:
+          root: ~/
+          paths:
+            - output.txt
+
+
 
 workflows:
   # Name the workflow "welcome"
@@ -38,4 +52,5 @@ workflows:
       - print_name:
           requires:
           - print_world
+      - save_hello_world_output
 
