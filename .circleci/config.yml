@@ -11,12 +11,23 @@ defaults: &defaults
     - image: circleci/node:13.8.0
   working_directory: ~/
 
+commands:
+  print_pipeline_id:
+    description: "adds circle circle ci workflow id to jobs"
+    parameters:
+      jobname: 
+        type: string
+        default: "Job"
+    steps:
+      - run: echo $CIRCLE_WORKFLOW_ID for << parameters.jobname >>
 
 # Orchestrate or schedule a set of jobs
 jobs:
   print_hello:
     <<: *defaults
     steps: 
+      - print_pipeline_id:
+          jobname: "print_hello"
       - run: echo Hello
   print_world:
     <<: *defaults
