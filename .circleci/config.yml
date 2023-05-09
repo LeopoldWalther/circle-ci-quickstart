@@ -15,26 +15,22 @@ defaults: &defaults
 # Orchestrate or schedule a set of jobs
 jobs:
   print_hello:
-    docker:
-      - image: circleci/node:13.8.0
+    <<: *defaults
     steps: 
       - run: echo Hello
   print_world:
-    docker:
-      - image: circleci/node:13.8.0
+    <<: *defaults
     steps: 
       - run: echo World!
   print_name:
-    docker:
-      - image: circleci/node:13.8.0
+    <<: *defaults
     steps: 
       - run: 
           name: "prints the owner project environment variable to the console"
           command: |
             echo $OWNER
   save_hello_world_output:
-    docker: 
-      - image: circleci/node:13.8.0
+    <<: *defaults
     steps:
       - run:
           name: "outputs text to csv file"
@@ -45,8 +41,7 @@ jobs:
           paths:
             - output.txt
   print_output_file:
-    docker: 
-      - image: circleci/node:13.8.0
+    <<: *defaults
     steps:
       - attach_workspace:
           at: ~/
