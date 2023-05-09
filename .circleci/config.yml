@@ -29,10 +29,12 @@ jobs:
       - print_pipeline_id:
           jobname: "print_hello"
       - run: echo Hello
+
   print_world:
     <<: *defaults
     steps: 
       - run: echo World!
+
   print_name:
     <<: *defaults
     steps: 
@@ -40,6 +42,7 @@ jobs:
           name: "prints the owner project environment variable to the console"
           command: |
             echo $OWNER
+
   save_hello_world_output:
     <<: *defaults
     steps:
@@ -51,12 +54,22 @@ jobs:
           root: ~/
           paths:
             - output.txt
+
   print_output_file:
     <<: *defaults
     steps:
       - attach_workspace:
           at: ~/
       - run: cat ~/output.txt
+    
+  failing_job:
+    <<: *defaults
+    steps:
+      - run: exit 1
+      - run:
+          name: on error
+          command: echo "Hello Error!"
+          when: on_fail
 
 
 workflows:
@@ -76,4 +89,5 @@ workflows:
       - print_output_file:
           requires: 
             - save_hello_world_output
+      - failing_job
 
